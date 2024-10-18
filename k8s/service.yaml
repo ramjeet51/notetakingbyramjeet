@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: note-taking-app-service
+spec:
+  type: NodePort  # You can use ClusterIP, NodePort, or LoadBalancer
+  ports:
+    - port: 5000
+      targetPort: 5000
+      protocol: TCP
+      nodePort: 30000  # Optional: Set a specific NodePort if needed
+  selector:
+    app: note-taking-app
+  

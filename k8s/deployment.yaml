@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: note-taking-app
+  labels:
+    app: note-taking-app
+spec:
+  replicas: 2  # Number of replicas
+  selector:
+    matchLabels:
+      app: note-taking-app
+  template:
+    metadata:
+      labels:
+        app: note-taking-app
+    spec:
+      containers:
+      - name: note-taking-app
+        image: your-dockerhub-username/note-taking-app:latest  # Replace with your Docker Hub image name
+        ports:
+        - containerPort: 5000
+        env:
+          - name: FLASK_ENV
+            value: development
+        volumeMounts:
+          - mountPath: /app/database.db
+            name: note-db-volume
+      volumes:
+        - name: note-db-volume
+          persistentVolumeClaim:
+            claimName: note-db-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: note-db-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi  # Change size as needed

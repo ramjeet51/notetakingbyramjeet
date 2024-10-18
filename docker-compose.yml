@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  note-taking-app:
+    build: .
+    volumes:
+      - .:/app
+      - note_db:/app/database.db  # This line adds a volume for the database
+    ports:
+      - "5000:5000"
+    environment:
+      FLASK_ENV: development
+    restart: unless-stopped
+
+volumes:
+  note_db:  # This defines the named volume for the database
